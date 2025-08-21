@@ -32,7 +32,7 @@ This project implements a complete end-to-end product matching pipeline that lev
 
 ### Databases & Search
 - **Vector Database**: FAISS (Facebook AI Similarity Search)
-- **Metadata Storage**: MongoDB-compatible JSON database
+- **Metadata Storage**: MongoDB-compatible database
 - **Search Strategies**: Visual, Textual, and Combined matching
 
 ### Web Framework & UI
@@ -46,7 +46,6 @@ This project implements a complete end-to-end product matching pipeline that lev
 ### Prerequisites
 - **GPU**: NVIDIA RTX 30/40 series (CUDA 12.1+)
 - **Python**: 3.10+
-- **Memory**: 8GB+ GPU VRAM, 16GB+ system RAM
 
 ### Installation
 
