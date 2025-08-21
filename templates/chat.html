@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Matching Assistant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .chat-container {
+            width: 90%;
+            max-width: 800px;
+            height: 90vh;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .chat-header h1 {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .status-indicator {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #4ade80;
+            animation: pulse 2s infinite;
+        }
+
+        .status-dot.processing {
+            background: #f59e0b;
+        }
+
+        .status-dot.error {
+            background: #ef4444;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background: #f8fafc;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .message.user {
+            flex-direction: row-reverse;
+        }
+
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .message.user .message-avatar {
+            background: #6366f1;
+        }
+
+        .message.assistant .message-avatar {
+            background: #10b981;
+        }
+
+        .message.system .message-avatar {
+            background: #f59e0b;
+        }
+
+        .message-content {
+            max-width: 70%;
+            padding: 15px 20px;
+            border-radius: 18px;
+            position: relative;
+        }
+
+        .message.user .message-content {
+            background: #6366f1;
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message.assistant .message-content {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-bottom-left-radius: 4px;
+        }
+
+        .message.system .message-content {
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+            border-radius: 10px;
+            font-size: 14px;
+        }
+
+        .product-result {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 10px;
+        }
+
+        .product-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .product-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .product-info h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 5px;
+        }
+
+        .product-meta {
+            display: flex;
+            gap: 15px;
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .similarity-score {
+            background: #10b981;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        .product-description {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #f3f4f6;
+            color: #4b5563;
+            line-height: 1.5;
+        }
+
+        .chat-input {
+            padding: 20px;
+            background: white;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .input-form {
+            display: flex;
+            gap: 12px;
+            align-items: flex-end;
+        }
+
+        .input-group {
+            flex: 1;
+        }
+
+        .input-label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: #6b7280;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .text-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: border-color 0.2s;
+            resize: none;
+            min-height: 50px;
+            max-height: 120px;
+        }
+
+        .text-input:focus {
+            outline: none;
+            border-color: #6366f1;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .file-input {
+            position: absolute;
+            left: -9999px;
+        }
+
+        .file-input-label {
+            padding: 12px 16px;
+            background: #f3f4f6;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            cursor: pointer;
+            display: inline-block;
+            transition: all 0.2s;
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .file-input-label:hover {
+            background: #e5e7eb;
+        }
+
+        .file-preview {
+            margin-top: 8px;
+            font-size: 12px;
+            color: #10b981;
+        }
+
+        .strategy-select {
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 14px;
+            background: white;
+            cursor: pointer;
+        }
+
+        .submit-btn {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+            font-size: 16px;
+        }
+
+        .submit-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            color: #6b7280;
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #e5e7eb;
+            border-top: 2px solid #6366f1;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            background: #fef2f2;
+            border: 1px solid #fca5a5;
+            color: #dc2626;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .chat-container {
+                width: 95%;
+                height: 95vh;
+            }
+
+            .product-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .product-meta {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <h1>🤖 Product Matching Assistant</h1>
+            <div class="status-indicator">
+                <span class="status-dot" id="statusDot"></span>
+                <span id="statusText">Ready</span>
+            </div>
+        </div>
+
+        <div class="chat-messages" id="chatMessages">
+            <div class="message system">
+                <div class="message-avatar">🚀</div>
+                <div class="message-content">
+                    Welcome! I can help you find products using images, text descriptions, or both. 
+                    Upload an image, type a description, or combine both for the best results.
+                </div>
+            </div>
+        </div>
+
+        <div class="loading" id="loadingIndicator">
+            <span class="spinner"></span>
+            Processing your request...
+        </div>
+
+        <div class="chat-input">
+            <form class="input-form" id="searchForm">
+                <div class="input-group">
+                    <label class="input-label">Text Query</label>
+                    <textarea 
+                        class="text-input" 
+                        id="queryInput" 
+                        placeholder="Describe the product you're looking for..."
+                        rows="1"
+                    ></textarea>
+                </div>
+
+                <div class="input-group" style="flex: 0 0 150px;">
+                    <label class="input-label">Image</label>
+                    <div class="file-input-wrapper">
+                        <input type="file" id="imageInput" class="file-input" accept="image/*">
+                        <label for="imageInput" class="file-input-label">📷 Choose Image</label>
+                    </div>
+                    <div class="file-preview" id="filePreview"></div>
+                </div>
+
+                <div class="input-group" style="flex: 0 0 120px;">
+                    <label class="input-label">Strategy</label>
+                    <select class="strategy-select" id="strategySelect">
+                        <option value="combined">Combined</option>
+                        <option value="visual">Visual Only</option>
+                        <option value="textual">Text Only</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    🔍 Search
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let isProcessing = false;
+
+        // DOM elements
+        const chatMessages = document.getElementById('chatMessages');
+        const searchForm = document.getElementById('searchForm');
+        const queryInput = document.getElementById('queryInput');
+        const imageInput = document.getElementById('imageInput');
+        const strategySelect = document.getElementById('strategySelect');
+        const submitBtn = document.getElementById('submitBtn');
+        const filePreview = document.getElementById('filePreview');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const statusDot = document.getElementById('statusDot');
+        const statusText = document.getElementById('statusText');
+
+        // Auto-resize textarea
+        queryInput.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+        });
+
+        // File input preview
+        imageInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                filePreview.textContent = `📎 ${file.name}`;
+            } else {
+                filePreview.textContent = '';
+            }
+        });
+
+        // Form submission
+        searchForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            if (isProcessing) {
+                alert('Please wait for the current request to complete.');
+                return;
+            }
+
+            const query = queryInput.value.trim();
+            const imageFile = imageInput.files[0];
+            const strategy = strategySelect.value;
+
+            // Validation
+            if (!query && !imageFile) {
+                alert('Please provide either a text query or an image.');
+                return;
+            }
+
+            // Show user message
+            addUserMessage(query, imageFile);
+
+            // Set processing state
+            setProcessingState(true);
+
+            try {
+                // Prepare form data
+                const formData = new FormData();
+                formData.append('query', query);
+                formData.append('strategy', strategy);
+                if (imageFile) {
+                    formData.append('image', imageFile);
+                }
+
+                // Send request
+                const response = await fetch('/api/match', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.status === 'success') {
+                    addAssistantMessage(result);
+                } else {
+                    addErrorMessage(result.error || 'An error occurred');
+                }
+
+            } catch (error) {
+                addErrorMessage('Network error: ' + error.message);
+            } finally {
+                setProcessingState(false);
+                clearForm();
+            }
+        });
+
+        function addUserMessage(query, imageFile) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message user';
+
+            let content = '';
+            if (query) {
+                content += `<div><strong>Query:</strong> ${escapeHtml(query)}</div>`;
+            }
+            if (imageFile) {
+                content += `<div><strong>Image:</strong> ${escapeHtml(imageFile.name)}</div>`;
+            }
+
+            messageDiv.innerHTML = `
+                <div class="message-avatar">U</div>
+                <div class="message-content">${content}</div>
+            `;
+
+            chatMessages.appendChild(messageDiv);
+            scrollToBottom();
+        }
+
+        function addAssistantMessage(result) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message assistant';
+
+            let content = `<div style="margin-bottom: 10px;">Found ${result.results.length} match(es) in ${result.execution_time.toFixed(3)}s</div>`;
+
+            if (result.results && result.results.length > 0) {
+                result.results.forEach(product => {
+                    const metadata = product.metadata;
+                    content += `
+                        <div class="product-result">
+                            <div class="product-header">
+                                ${metadata.image_base64 ? 
+                                    `<img src="${metadata.image_base64}" alt="${metadata.name}" class="product-image">` : 
+                                    '<div class="product-image" style="background: #f3f4f6; display: flex; align-items: center; justify-content: center; color: #9ca3af;">No Image</div>'
+                                }
+                                <div class="product-info">
+                                    <h3>${escapeHtml(metadata.name)}</h3>
+                                    <div class="product-meta">
+                                        <span><strong>Brand:</strong> ${escapeHtml(metadata.brand)}</span>
+                                        <span><strong>Category:</strong> ${escapeHtml(metadata.category)}</span>
+                                        <span><strong>Price:</strong> $${metadata.price}</span>
+                                        <span class="similarity-score">Score: ${product.similarity_score.toFixed(4)}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            ${metadata.description ? 
+                                `<div class="product-description">${escapeHtml(metadata.description)}</div>` : 
+                                ''
+                            }
+                        </div>
+                    `;
+                });
+            }
+
+            messageDiv.innerHTML = `
+                <div class="message-avatar">🤖</div>
+                <div class="message-content">${content}</div>
+            `;
+
+            chatMessages.appendChild(messageDiv);
+            scrollToBottom();
+        }
+
+        function addErrorMessage(error) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message assistant';
+
+            messageDiv.innerHTML = `
+                <div class="message-avatar">⚠️</div>
+                <div class="message-content">
+                    <div class="error-message">
+                        <strong>Error:</strong> ${escapeHtml(error)}
+                    </div>
+                </div>
+            `;
+
+            chatMessages.appendChild(messageDiv);
+            scrollToBottom();
+        }
+
+        function setProcessingState(processing) {
+            isProcessing = processing;
+            submitBtn.disabled = processing;
+            
+            if (processing) {
+                loadingIndicator.style.display = 'block';
+                statusDot.className = 'status-dot processing';
+                statusText.textContent = 'Processing...';
+                submitBtn.textContent = '⏳ Processing...';
+            } else {
+                loadingIndicator.style.display = 'none';
+                statusDot.className = 'status-dot';
+                statusText.textContent = 'Ready';
+                submitBtn.textContent = '🔍 Search';
+            }
+        }
+
+        function clearForm() {
+            queryInput.value = '';
+            imageInput.value = '';
+            filePreview.textContent = '';
+            queryInput.style.height = 'auto';
+        }
+
+        function scrollToBottom() {
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Check system status periodically
+        async function checkStatus() {
+            try {
+                const response = await fetch('/api/status');
+                const status = await response.json();
+                
+                if (status.status === 'ready' && !status.processing) {
+                    statusDot.className = 'status-dot';
+                    statusText.textContent = 'Ready';
+                } else if (status.processing) {
+                    statusDot.className = 'status-dot processing';
+                    statusText.textContent = 'Processing...';
+                } else {
+                    statusDot.className = 'status-dot error';
+                    statusText.textContent = 'Error';
+                }
+            } catch (error) {
+                statusDot.className = 'status-dot error';
+                statusText.textContent = 'Offline';
+            }
+        }
+
+        // Check status every 5 seconds
+        setInterval(checkStatus, 5000);
+        checkStatus(); // Initial check
+    </script>
+</body>
+</html>

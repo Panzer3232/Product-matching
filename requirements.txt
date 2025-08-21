@@ -1,0 +1,131 @@
+# Product Matching System - Complete Requirements
+# Tested and working versions from successful deployment
+
+# Core PyTorch Stack
+torch==2.7.1
+torchvision==0.22.1
+torchaudio==2.8.0
+
+# Transformers and AI Models
+transformers==4.51.3
+accelerate==1.10.0
+sentence-transformers==5.1.0
+safetensors==0.6.2
+
+# Computer Vision and Image Processing
+Pillow==10.1.0
+opencv-python==4.12.0.88
+imageio==2.37.0
+scikit-image==0.25.2
+
+# CLIP Model (install from source)
+git+https://github.com/openai/CLIP.git
+
+# NVIDIA TensorRT and Triton
+tensorrt==10.11.0.33
+tensorrt-llm==0.21.0
+tritonclient==2.59.0
+nvidia-pytriton==0.7.0
+
+# TensorRT Bindings and Libraries (Required for RTX 3080 Ti)
+tensorrt-cu12==10.11.0.33
+tensorrt-cu12-bindings==10.11.0.33
+tensorrt-cu12-libs==10.11.0.33
+tensorrt-cu13==10.13.2.6
+tensorrt-cu13-bindings==10.13.2.6
+tensorrt-cu13-libs==10.13.2.6
+
+# Vector Database and Search
+faiss-cpu==1.12.0
+chromadb==1.0.20
+numpy==1.26.4
+
+# Database - MongoDB
+pymongo==4.14.1
+motor==3.7.1
+
+# Web Framework (FastAPI)
+fastapi==0.105.0
+uvicorn==0.24.0
+python-multipart==0.0.6
+jinja2==3.1.2
+starlette==0.27.0
+aiofiles==23.2.1
+
+# Authentication and Security
+python-jose==3.3.0
+passlib==1.7.4
+cryptography==45.0.6
+bcrypt==4.3.0
+
+# HTTP and Networking
+httpx==0.28.1
+aiohttp==3.12.15
+requests==2.32.5
+grpcio==1.67.1
+
+# ONNX Support
+onnx==1.18.0
+onnxruntime==1.22.1
+onnxruntime-gpu==1.22.0
+
+# Data Processing and Analysis
+pandas==2.3.1
+datasets==3.1.0
+scikit-learn==1.7.1
+scipy==1.15.3
+
+# Configuration and Environment
+python-dotenv==1.1.1
+pydantic==2.11.7
+pydantic-core==2.33.2
+
+# Utilities and Monitoring
+loguru==0.7.3
+psutil==7.0.0
+tqdm==4.67.1
+py-cpuinfo==9.0.0
+
+# Development and Testing
+pytest==8.4.1
+black==25.1.0
+isort==6.0.1
+
+# Jupyter and Interactive Development
+jupyter==1.1.1
+matplotlib==3.10.5
+ipython==8.37.0
+
+# Additional ML Utilities
+einops==0.8.1
+timm==1.0.19
+tokenizers==0.21.4
+huggingface-hub==0.34.4
+
+# Core Python Dependencies
+packaging==25.0
+typing-extensions==4.14.1
+filelock==3.19.1
+regex==2025.7.34
+
+# Async and Event Loop
+anyio==3.7.1
+asyncio-timeout==5.0.1
+uvloop==0.21.0
+
+# Image and Media Processing
+av==15.0.0
+opencv-python-headless==4.11.0.86
+
+# Network and Protocol Support
+certifi==2025.8.3
+charset-normalizer==3.4.3
+idna==3.10
+urllib3==2.5.0
+
+# JSON and Data Serialization
+orjson==3.11.2
+jsonschema==4.25.1
+
+# System and Hardware Monitoring
+nvidia-ml-py==12.575.51

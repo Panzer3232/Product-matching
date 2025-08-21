@@ -1,0 +1,14 @@
+{
+  "product_ids": [
+    "prod_001",
+    "prod_002",
+    "prod_003",
+    "prod_004",
+    "prod_005"
+  ],
+  "created_at": "2025-08-16T18:53:55.522621",
+  "visual_dim": 512,
+  "text_dim": 384,
+  "combined_dim": 896,
+  "total_products": 5
+}

@@ -1,0 +1,52 @@
+[
+  {
+    "product_id": "prod_001",
+    "name": "iPhone 15 Pro",
+    "brand": "Apple",
+    "category": "Electronics",
+    "price": 1199.99,
+    "description": "Latest iPhone with titanium design and A17 Pro chip",
+    "image_path": "data/products/iphone15_pro.jpeg",
+    "created_at": "2025-08-20T12:10:39.702827+00:00"
+  },
+  {
+    "product_id": "prod_002",
+    "name": "Samsung Galaxy S24 Ultra",
+    "brand": "Samsung",
+    "category": "Electronics",
+    "price": 1299.99,
+    "description": "Premium Android smartphone with S Pen and advanced cameras",
+    "image_path": "data/products/galaxy_s24_ultra.jpeg",
+    "created_at": "2025-08-20T12:10:39.702841+00:00"
+  },
+  {
+    "product_id": "prod_003",
+    "name": "Nike Air Force 1",
+    "brand": "Nike",
+    "category": "Fashion",
+    "price": 110.0,
+    "description": "Classic white leather sneakers with iconic Nike design",
+    "image_path": "data/products/nike_air_force1.jpeg",
+    "created_at": "2025-08-20T12:10:39.702844+00:00"
+  },
+  {
+    "product_id": "prod_004",
+    "name": "MacBook Pro M3",
+    "brand": "Apple",
+    "category": "Electronics",
+    "price": 1999.99,
+    "description": "Professional laptop with M3 chip and Liquid Retina XDR display",
+    "image_path": "data/products/macbook_pro_m3.jpeg",
+    "created_at": "2025-08-20T12:10:39.702847+00:00"
+  },
+  {
+    "product_id": "prod_005",
+    "name": "Sony WH-1000XM5 Headphones",
+    "brand": "Sony",
+    "category": "Electronics",
+    "price": 399.99,
+    "description": "Industry-leading noise canceling wireless headphones",
+    "image_path": "data/products/sony_headphones.jpeg",
+    "created_at": "2025-08-20T12:10:39.702849+00:00"
+  }
+]
