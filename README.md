@@ -44,7 +44,7 @@ The system offers three distinct search strategies to handle different user scen
 
 ### 💾 Intelligent Data Management
 
-- **Vector Database**: FAISS (Facebook AI Similarity Search) provides lightning-fast nearest neighbor search across millions of product embeddings
+- **Vector Database**: FAISS (Facebook AI Similarity Search) provides lightning-fast nearest neighbor search across millions of product embeddingsI
 - **Metadata Storage**: MongoDB-compatible database stores complete product information with full CRUD operations
 - **Comprehensive Logging**: Every operation is logged with detailed metadata for monitoring, debugging, and performance analysis
 
@@ -102,49 +102,88 @@ This system is designed for practical deployment in:
 - **GPU**: NVIDIA RTX 30/40 series (CUDA 12.1+)
 - **Python**: 3.10+
 
-### Installation
+### Installation & Setup
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/Panzer3232/Product-matching.git
-   cd Product-matching
-   ```
-
-2. **Create virtual environment**
-   ```bash
-   conda create -n product_matching python=3.10
-   conda activate product_matching
-   ```
-
-3. **Install dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. **Test dependecies** (first run only)
-   ```bash
-   python tests/test_quantization/base_test.py
-   ```
-
-### Running the System
-
-#### 1. Start Triton Inference Server
+#### 1. **Clone the repository**
 ```bash
-python scripts/start_server.py
+git clone https://github.com/Panzer3232/Product-matching.git
+cd Product-matching
 ```
 
-#### 2. Launch Web Interface
+#### 2. **Create virtual environment**
 ```bash
+conda create -n product_matching python=3.10
+conda activate product_matching
+```
+
+#### 3. **Install dependencies**
+```bash
+pip install -r requirements.txt
+```
+
+#### 4. **Test environment setup**
+```bash
+# Verify all dependencies are correctly installed
+python tests/test_environment.py
+```
+
+#### 5. **Generate TensorRT models** (Required - models not included in repo)
+```bash
+# This will create ONNX and TensorRT models for BLIP
+python scripts/vlm_quantization_3.py
+
+# Expected output:
+# ✅ ONNX: Successfully exported
+# ✅ TensorRT: Engine created  
+# ✅ Quantization: FP16 applied
+```
+
+#### 6. **Set up Triton model repository**
+```bash
+# Copy TensorRT models to Triton model repository structure
+# This step is handled automatically by the quantization script
+# Verify model structure:
+ls -la triton_models/blip_captioning/1/
+```
+
+#### 7. **Start Triton Inference Server**
+```bash
+python start_triton_server.py
+
+# Wait for server ready message:
+# ✅ Server ready for inference requests
+```
+
+#### 8. **Test Triton client connection** (Optional but recommended)
+```bash
+# In a new terminal, test the Triton server
+python tests/integration/test_triton_client.py
+
+# Expected output:
+# ✅ Triton server is ready
+# ✅ BLIP model is loaded and ready
+# ✅ Test inference successful
+```
+
+#### 9. **Launch Web Interface**
+```bash
+# In a new terminal (keep Triton server running)
 python start_web_ui.py
+
+# Expected output:
+# 🚀 Starting Product Matching Web UI...
+# ✅ All components initialized successfully
+# 🌐 Access the interface at: http://localhost:8080
 ```
 
-#### 3. Access the Application
+#### 10. **Access the Application**
 - **Web UI**: http://localhost:8080
 - **API Docs**: http://localhost:8080/docs
 
-#### 4. Command Line Interface
+### Alternative: Command Line Interface
+
 ```bash
-# Interactive demo
+# Interactive demo (after Triton server is running)
 python main.py demo
 
 # Direct matching
@@ -153,6 +192,13 @@ python main.py match --image data/products/phone.jpg --query "smartphone"
 # System diagnostics  
 python main.py diagnostics
 ```
+
+### 🚨 Important Notes
+
+- **Models are generated at runtime** - The repository excludes large model files
+- **Triton server must be running** before starting the web interface
+- **First model generation** takes 5-10 minutes depending on GPU
+- **Keep Triton server running** in background for web interface to work
 
 ## 🏗️ Architecture
 
@@ -302,6 +348,8 @@ DEBUG=false
 **1. GPU Memory Error**
 ```bash
 # Reduce batch size or use CPU fallback
+nvidia-smi
+
 export MAX_BATCH_SIZE=1
 export DEVICE=cpu
 ```
