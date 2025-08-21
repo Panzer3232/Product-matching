@@ -113,7 +113,7 @@ python main.py diagnostics
                                 ▼
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
 │  FAISS Vector   │◄──►│  Matching       │◄──►│  MongoDB Mock   │
-│  Database       │    │  Engine         │    │  (JSON Store)   │
+│  Database       │    │  Engine         │    │                 │
 └─────────────────┘    └─────────────────┘    └─────────────────┘
 ```
 
