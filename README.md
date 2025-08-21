@@ -13,7 +13,7 @@ This project implements a sophisticated end-to-end product matching pipeline tha
 
 ### 🖥️ Web Interface
 
-![Product Matching Web Interface](/images/product_matching_system.jpeg)
+<img src="images/product_matching_system.jpeg" alt="Product Matching Web Interface" width="800">
 
 *Modern chat-style web interface showing successful MacBook Pro M3 identification with 1.1644 similarity score in 0.958 seconds*
 
