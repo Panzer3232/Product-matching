@@ -1,0 +1,144 @@
+# Product Matching System - GitIgnore
+# Excludes large files, models, and temporary data
+
+# Product Matching System - GitIgnore
+# Excludes large files, models, and temporary data
+
+# ===== MODEL FILES (Large, Hardware-Specific) =====
+# Entire models directory (contains large files)
+models/
+triton_server/
+triton_models/
+
+# TensorRT engines (generated at runtime)
+*.engine
+*.plan
+*.trt
+*.onnx
+
+# All model files
+*.pth
+*.pt
+*.safetensors
+*.bin
+
+# Model cache directories
+transformers_cache/
+huggingface_cache/
+.cache/
+__pycache__/
+
+# ===== TEMPORARY AND RUNTIME FILES =====
+# Temporary uploaded images
+temp_images/
+uploads/
+*.tmp
+
+# Log files
+*.log
+logs/
+triton_server.log
+
+# Runtime data
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# ===== PYTHON ENVIRONMENT =====
+# Virtual environments
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.venv/
+conda-meta/
+
+# Python package management
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.coverage
+.pytest_cache/
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# ===== DEVELOPMENT AND EDITOR FILES =====
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb
+
+# ===== SYSTEM FILES =====
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# ===== DATA FILES (Optional - Keep Sample Data) =====
+# Large data files (uncomment if needed)
+# data/raw/
+# data/processed/
+
+
+# Database files with many logs
+data/database/operation_logs.json
+
+# ===== CONFIGURATION AND SECRETS =====
+# Environment variables
+.env
+.env.local
+.env.production
+.env.staging
+
+# API keys and secrets
+config/secrets.json
+*.key
+*.pem
+
+# ===== DOCKER AND DEPLOYMENT =====
+# Docker
+.dockerignore
+
+# ===== GPU AND CUDA =====
+# CUDA cache
+.nv/
+
+# ===== BACKUP AND VERSION FILES =====
+# Backup files
+*.bak
+*.backup
+*.old
+
+# ===== KEEP THESE SAMPLE FILES =====
+# (Explicitly keep important sample data)
+!data/products/
+!data/products_with_embeddings.json
+!data/test_images/
+!data/database/products.json
+!data/database/database_metadata.json
+
+# ===== PROJECT SPECIFIC =====
+# Triton server files
+triton_logs/
+model_repository/*/1/*.engine
+
+# Performance logs
+nvidia-smi.log
+gpu_memory.log
+
+# Test outputs
+test_results/
+benchmark_results/
