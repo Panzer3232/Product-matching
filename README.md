@@ -13,7 +13,7 @@ This project implements a sophisticated end-to-end product matching pipeline tha
 
 ### 🖥️ Web Interface
 
-<img src="images/product_matching_system.jpeg" alt="Product Matching Web Interface" width="800" height='400'>
+<img src="images/product_matching_system.jpeg" alt="Product Matching Web Interface" width="600" height='400'>
 
 *Modern chat-style web interface showing successful MacBook Pro M3 identification with 1.1644 similarity score in 0.958 seconds*
 
@@ -179,7 +179,7 @@ python main.py diagnostics
 
 ### Model Pipeline
 
-![Product Matching Pipeline](images/Pipeline_work.jpeg)
+<img src="images/Pipeline_work.jpeg" alt="Product Matching Web Interface" width="600" height='400'>
 
 *Real pipeline execution showing BLIP caption generation, multi-modal embedding creation, and successful product matching*
 
