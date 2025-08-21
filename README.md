@@ -5,14 +5,17 @@
 [![TensorRT](https://img.shields.io/badge/TensorRT-10.11+-green.svg)](https://developer.nvidia.com/tensorrt)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.105+-green.svg)](https://fastapi.tiangolo.com)
 
-
-> **Advanced multi-modal AI system for product matching using Vision-Language Models, TensorRT quantization, and NVIDIA Triton Inference Server**
-
 > **Advanced multi-modal AI system for product matching using Vision-Language Models, TensorRT quantization, and NVIDIA Triton Inference Server**
 
 ## 🎯 Overview
 
 This project implements a sophisticated end-to-end product matching pipeline that leverages state-of-the-art multi-modal AI technologies to intelligently match products based on both visual and textual inputs. The system is designed as a production-ready solution that can handle real-world e-commerce scenarios where users need to find products using images, descriptions, or both.
+
+### 🖥️ Web Interface
+
+![Product Matching Web Interface](/images/product_matching_system.jpeg)
+
+*Modern chat-style web interface showing successful MacBook Pro M3 identification with 1.1644 similarity score in 0.958 seconds*
 
 ### 🧠 Core Technology Integration
 
@@ -176,6 +179,10 @@ python main.py diagnostics
 
 ### Model Pipeline
 
+![Product Matching Pipeline](images/Pipeline_work.jpeg)
+
+*Real pipeline execution showing BLIP caption generation, multi-modal embedding creation, and successful product matching*
+
 ```
 Input Image ──► BLIP ──► Image Description ──┐
                                              ├──► Combined Text ──► SentenceTransformer ──► Text Embedding
@@ -185,6 +192,13 @@ Input Image ──► CLIP ──► Visual Embedding
 
 [Visual Embedding + Text Embedding] ──► FAISS Search ──► Top Matches
 ```
+
+**Pipeline Execution Details** (as shown in terminal):
+1. **BLIP Analysis**: "a laptop with a black keyboard and a white background"
+2. **Text Processing**: Combined with user query "premium device"
+3. **Multi-Modal Embeddings**: Visual (512D) + Text (384D) = Combined (896D)
+4. **FAISS Search**: 1 match found using combined index
+5. **Result**: MacBook Pro M3 with 1.1845 similarity score in 0.515s
 
 ## 📊 Performance Metrics
 
